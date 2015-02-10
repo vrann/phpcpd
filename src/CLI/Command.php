@@ -12,6 +12,8 @@ namespace SebastianBergmann\PHPCPD\CLI;
 
 use SebastianBergmann\PHPCPD\Detector\Detector;
 use SebastianBergmann\PHPCPD\Detector\Strategy\DefaultStrategy;
+use SebastianBergmann\PHPCPD\Detector\Strategy\CachedTokensStrategy;
+use SebastianBergmann\PHPCPD\Detector\Strategy\CachedTokens\Loader;
 use SebastianBergmann\PHPCPD\Log\PMD;
 use SebastianBergmann\PHPCPD\Log\Text;
 use SebastianBergmann\FinderFacade\FinderFacade;
@@ -130,7 +132,7 @@ class Command extends AbstractCommand
             $progressHelper->start($output, count($files));
         }
 
-        $strategy = new DefaultStrategy;
+        $strategy = new CachedTokensStrategy(new Loader());
         $detector = new Detector($strategy, $progressHelper);
         $quiet    = $output->getVerbosity() == OutputInterface::VERBOSITY_QUIET;
 
